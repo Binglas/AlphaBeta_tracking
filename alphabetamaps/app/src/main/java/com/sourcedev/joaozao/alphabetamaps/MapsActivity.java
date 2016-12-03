@@ -19,7 +19,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private AlphaBetaGen alphaBetaGen;
     private ArrayList<Double> arrayX;
     private ArrayList<Double> arrayY;
-    //private LatLng feup1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +28,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        //alphaBetaGen = new AlphaBetaGen(this, mMap, 1, 99);
-        //alphaBetaGen.executeAlphaBetaGen();
 
     }
 
@@ -56,8 +52,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         arrayY = alphaBetaGen.getArrayListY();
 
         // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //  FEUP 41º10'41.00" N 8º35'54.00" W
+        // LatLng sydney = new LatLng(-34, 151);
+        // FEUP 41º10'41.00" N 8º35'54.00" W
         /*for(int i = 0 ; i < arrayY.size() ; i++) {
             Log.d("_OLA","lat = " + arrayX.get(i) + "    long = " + arrayY.get(i));
             LatLng feup1 = new LatLng(arrayX.get(i), arrayY.get(i));
