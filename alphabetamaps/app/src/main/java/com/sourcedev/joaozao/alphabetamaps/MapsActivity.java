@@ -1,8 +1,11 @@
 package com.sourcedev.joaozao.alphabetamaps;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,6 +22,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private AlphaBetaGen alphaBetaGen;
     private ArrayList<Double> arrayX;
     private ArrayList<Double> arrayY;
+    private Button fuzzyActBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        fuzzyActBtn = (Button) findViewById(R.id.newValues_btn);
+        fuzzyActBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MapsActivity.this, Fuzzy_Activity.class));
+            }
+        });
 
     }
 
