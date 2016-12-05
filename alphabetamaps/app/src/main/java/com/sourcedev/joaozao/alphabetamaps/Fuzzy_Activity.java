@@ -3,6 +3,7 @@ package com.sourcedev.joaozao.alphabetamaps;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.fuzzylite.Engine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,7 @@ public class Fuzzy_Activity extends AppCompatActivity
     private boolean hasLabelForSelected = false;
     private boolean pointsHaveDifferentColor;
     private FuzzyX fuzzyX;
+    private SimpleDimmerFuzzy simpleDimmerFuzzy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class Fuzzy_Activity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+        fab.setVisibility(View.GONE);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -82,10 +87,13 @@ public class Fuzzy_Activity extends AppCompatActivity
         chart.setOnValueTouchListener(new ValueTouchListener());
 
         // Generate some random values.
-        generateValues();
+        //generateValues();
 
         //generateData();
         generateFuzzyData();
+        //simpleDimmerFuzzy = new SimpleDimmerFuzzy();
+        //simpleDimmerFuzzy.run();
+        //generateFuzzyData1();
 
         // Disable viewport recalculations, see toggleCubic() method for more info.
         chart.setViewportCalculationEnabled(false);
@@ -124,9 +132,10 @@ public class Fuzzy_Activity extends AppCompatActivity
         // Reset viewport height range to (0,100)
         final Viewport v = new Viewport(chart.getMaximumViewport());
         v.bottom = 0;
-        v.top = 100;
+        v.top = 1;
         v.left = 0;
-        v.right = numberOfPoints - 1;
+        //v.right = numberOfPoints - 1;
+        v.right = 1;
         chart.setMaximumViewport(v);
         chart.setCurrentViewport(v);
     }
@@ -185,7 +194,60 @@ public class Fuzzy_Activity extends AppCompatActivity
             List<PointValue> values = new ArrayList<PointValue>();
             for (int j = 0; j < fuzzyX.getInputList().size(); ++j) {
                 values.add(new PointValue(fuzzyX.getInputList().get(j), fuzzyX.getOutputList().get(j)));
+                Log.d("_fuzzy12", "input : " + fuzzyX.getInputList().get(j) + "   output : " + fuzzyX.getOutputList().get(j));
             }
+
+            Line line = new Line(values);
+            line.setColor(ChartUtils.COLORS[i]);
+            line.setShape(shape);
+            line.setCubic(isCubic);
+            line.setFilled(isFilled);
+            line.setHasLabels(hasLabels);
+            line.setHasLabelsOnlyForSelected(hasLabelForSelected);
+            line.setHasLines(hasLines);
+            line.setHasPoints(hasPoints);
+            if (pointsHaveDifferentColor){
+                line.setPointColor(ChartUtils.COLORS[(i + 1) % ChartUtils.COLORS.length]);
+            }
+            lines.add(line);
+        }
+
+        data = new LineChartData(lines);
+
+        if (hasAxes) {
+            Axis axisX = new Axis();
+            Axis axisY = new Axis().setHasLines(true);
+            if (hasAxesNames) {
+                axisX.setName("Axis X");
+                axisY.setName("Axis Y");
+            }
+            data.setAxisXBottom(axisX);
+            data.setAxisYLeft(axisY);
+        } else {
+            data.setAxisXBottom(null);
+            data.setAxisYLeft(null);
+        }
+
+        data.setBaseValue(Float.NEGATIVE_INFINITY);
+        chart.setLineChartData(data);
+
+    }
+
+    private void generateFuzzyData1() {
+
+        List<Line> lines = new ArrayList<Line>();
+        for (int i = 0; i < numberOfLines; ++i) {
+
+            List<PointValue> values = new ArrayList<PointValue>();
+            Engine engine = simpleDimmerFuzzy.getEngine();
+            for (int j = 0; j<1000; j++) {
+                //values.add(new PointValue((float) (j*0.001), (float) engine.getOutputVariable("Power").get));
+                Log.d("_fuzzy12", "input : " + (float) (j*0.001) + "   output : " + (float) engine.getOutputValue("Power"));
+            }
+            /*for (int j = 0; j < fuzzyX.getInputList().size(); ++j) {
+                values.add(new PointValue(fuzzyX.getInputList().get(j), fuzzyX.getOutputList().get(j)));
+                Log.d("_fuzzy12", "input : " + fuzzyX.getInputList().get(j) + "   output : " + fuzzyX.getOutputList().get(j));
+            }*/
 
             Line line = new Line(values);
             line.setColor(ChartUtils.COLORS[i]);
@@ -262,7 +324,7 @@ public class Fuzzy_Activity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
