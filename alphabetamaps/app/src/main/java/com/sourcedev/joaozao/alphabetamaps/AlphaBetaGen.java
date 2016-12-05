@@ -17,7 +17,9 @@ import java.util.ArrayList;
 public class AlphaBetaGen {
 
     private double dt = 0.5;
-    private double xk_1 = -8.598311, vk_1 = 0, a = 0.85, b = 0.005;
+    //private double xk_1 = -8.598311, vk_1 = 0, a = 0.85, b = 0.005;
+    // feup indoor
+    private double xk_1 = -8.595512, vk_1 = 0, a = 0.85, b = 0.005;
     private double yk_1 = 41.177700, vyk_1 = 0;
 
     private double xk, vk, rk;
@@ -71,12 +73,17 @@ public class AlphaBetaGen {
     }
 
     public void generateAlphaBetaX() {
-        for(double i = -8.598311 ; i <= -8.594150 ; i = i + 0.0008) {
+        //for(double i = -8.598311 ; i <= -8.594150 ; i = i + 0.0008) {
+        // indoor feup
+        for(double i = -8.595512 ; i <= -8.594895 ; i = i + 0.00008) {
             {
 
 
                 //Log.d("_DEBUG1" , "x seguinte : " + i);
                 //xm = MIN + (float)(Math.random() * ((MAX - MIN) + 1));// input signal
+
+                // indoor 41.178030   -8.595512
+                // final  41.178008   -8.594895
 
                 // x inicial  == -8.594311
                 // incremento por iteracao  == 0.0002
@@ -110,13 +117,16 @@ public class AlphaBetaGen {
     }
 
     public void generateAlphaBetaY() {
-        for(double i = 41.177700 ; i <= 41.178700 ; i = i+0.0002) {
+        //for(double i = 41.177700 ; i <= 41.178700 ; i = i+0.0002) {
+        for(double i = 41.178030 ; i <= 41.178123 ; i = i+0.00002) {
             {
 
 
                 // y inicial  == 41.177700
                 // incremento por iteracao  == 0.0002
                 // condicao de paragem <= 41.178700
+
+                // 41.178123, -8.595509
 
                 ym = i;// input signal
 
