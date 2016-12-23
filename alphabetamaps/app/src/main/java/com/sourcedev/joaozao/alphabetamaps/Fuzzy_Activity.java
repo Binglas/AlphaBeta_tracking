@@ -35,9 +35,9 @@ public class Fuzzy_Activity extends AppCompatActivity
 
     private LineChartView chart;
     private LineChartData data;
-    private int numberOfLines = 1;
+    private int numberOfLines = 2;
     private int maxNumberOfLines = 4;
-    private int numberOfPoints = 12;
+    private int numberOfPoints = 100;
 
     float[][] randomNumbersTab = new float[maxNumberOfLines][numberOfPoints];
 
@@ -81,7 +81,8 @@ public class Fuzzy_Activity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         fuzzyX = new FuzzyX();
-        fuzzyX.fuzzyExample();
+        //fuzzyX.fuzzySimpleDimmer();
+        fuzzyX.airConditionerFuzzy();
 
         chart = (LineChartView) findViewById(R.id.chart);
         chart.setOnValueTouchListener(new ValueTouchListener());
@@ -135,7 +136,7 @@ public class Fuzzy_Activity extends AppCompatActivity
         v.top = 1;
         v.left = 0;
         //v.right = numberOfPoints - 1;
-        v.right = 1;
+        v.right = 40;
         chart.setMaximumViewport(v);
         chart.setCurrentViewport(v);
     }

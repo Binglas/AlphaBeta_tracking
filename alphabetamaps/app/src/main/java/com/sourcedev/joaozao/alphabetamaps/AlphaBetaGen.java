@@ -29,8 +29,6 @@ public class AlphaBetaGen {
 
     private Activity mContext;
     private GoogleMap mMap;
-    private int MIN = 1;
-    private int MAX = 99;
     private int countX = 0;
     private int countY = 0;
 
@@ -38,11 +36,9 @@ public class AlphaBetaGen {
     private ArrayList<Double> arrayListY = new ArrayList<>();
 
 
-    public AlphaBetaGen(Activity pContext, GoogleMap pMap, int MIN, int MAX) {
+    public AlphaBetaGen(Activity pContext, GoogleMap pMap) {
         this.mContext = pContext;
         mMap = pMap;
-        this.MIN = MIN;
-        this.MAX = MAX;
     }
 
 
@@ -61,10 +57,10 @@ public class AlphaBetaGen {
             public void run() {
 
                 for(int i = 0 ; i < arrayListY.size() ; i++) {
-                    Log.d("_OLA","lat = " + arrayListX.get(i) + "    long = " + arrayListY.get(i));
+                    Log.d(Defines.TAG,"lat = " + arrayListX.get(i) + "    long = " + arrayListY.get(i));
                     LatLng feup1 = new LatLng(arrayListY.get(i), arrayListX.get(i));
                     mMap.addMarker(new MarkerOptions().position(feup1));
-                    Log.d("_OLE", "feup latitude  : " + feup1.latitude + "feup longitude  : " + feup1.longitude);
+                    Log.d(Defines.TAG, "feup latitude  : " + feup1.latitude + "feup longitude  : " + feup1.longitude);
 
                 }
             }
@@ -73,7 +69,6 @@ public class AlphaBetaGen {
     }
 
     public void generateAlphaBetaX() {
-        //for(double i = -8.598311 ; i <= -8.594150 ; i = i + 0.0008) {
         // indoor feup
         for(double i = -8.595512 ; i <= -8.594895 ; i = i + 0.00008) {
             {
@@ -107,7 +102,7 @@ public class AlphaBetaGen {
 
                 arrayListX.add(xk_1);
 
-                Log.d("_DEBUG ", " input = " + xm + " x = " + xk_1 + "    ArrayX(countX) = " + arrayListX.get(countX) + "   countX = " + countX);
+                Log.d(Defines.TAG, " input = " + xm + " x = " + xk_1 + "    ArrayX(countX) = " + arrayListX.get(countX) + "   countX = " + countX);
 
                 countX++;
 
@@ -117,7 +112,6 @@ public class AlphaBetaGen {
     }
 
     public void generateAlphaBetaY() {
-        //for(double i = 41.177700 ; i <= 41.178700 ; i = i+0.0002) {
         for(double i = 41.178030 ; i <= 41.178123 ; i = i+0.00002) {
             {
 
@@ -142,7 +136,7 @@ public class AlphaBetaGen {
                 vyk_1 = vyk;
 
                 arrayListY.add(yk_1);
-                Log.d("_DEBUG ", " input = " + ym + " y = " + yk_1 + "    ArrayY(countY) = " + arrayListY.get(countY) + "   countY = " + countY);
+                Log.d(Defines.TAG, " input = " + ym + " y = " + yk_1 + "    ArrayY(countY) = " + arrayListY.get(countY) + "   countY = " + countY);
                 countY++;
             }
         }

@@ -11,22 +11,11 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <EditText
-            android:id="@+id/alpha_et"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="alpha"/>
-        <EditText
-            android:id="@+id/beta_et"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="beta"/>
-
         <Button
             android:id="@+id/newValues_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Set"/>
+            android:text="@string/fuzzy_btn"/>
 
     </LinearLayout>
 

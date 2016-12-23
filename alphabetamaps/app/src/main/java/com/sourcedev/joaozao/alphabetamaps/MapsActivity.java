@@ -1,18 +1,14 @@
 package com.sourcedev.joaozao.alphabetamaps;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
@@ -57,25 +53,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        alphaBetaGen = new AlphaBetaGen(this, mMap, 1, 99);
+        alphaBetaGen = new AlphaBetaGen(this, mMap);
         alphaBetaGen.executeAlphaBetaGen();
 
         arrayX = alphaBetaGen.getArrayListX();
         arrayY = alphaBetaGen.getArrayListY();
 
-        // Add a marker in Sydney and move the camera
-        // LatLng sydney = new LatLng(-34, 151);
-        // FEUP 41º10'41.00" N 8º35'54.00" W
-        /*for(int i = 0 ; i < arrayY.size() ; i++) {
-            Log.d("_OLA","lat = " + arrayX.get(i) + "    long = " + arrayY.get(i));
-            LatLng feup1 = new LatLng(arrayX.get(i), arrayY.get(i));
-            //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            mMap.addMarker(new MarkerOptions().position(feup1).title("Marker in feup"));
-        }*/
-
-        //feup1 = new LatLng(41.17866546024098, -8.597631000000002);
-        //mMap.addMarker(new MarkerOptions().position(feup1).title("Marker in feup"));
-        //mMap.setMaxZoomPreference(mMap.getMaxZoomLevel());
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(feup1));
     }
 }
