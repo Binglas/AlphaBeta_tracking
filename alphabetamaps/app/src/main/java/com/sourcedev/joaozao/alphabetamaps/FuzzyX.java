@@ -32,20 +32,31 @@ public class FuzzyX {
         Engine engine = new Engine();
         engine.setName("AirConditioner");
 
-        InputVariable inputVariable = new InputVariable();
-        inputVariable.setEnabled(true);
-        inputVariable.setName("RoomTemperature");
-        inputVariable.setRange(0, 40);
-        inputVariable.addTerm(new Triangle("VERYCOLD", 0, 0, 10));
-        inputVariable.addTerm(new Triangle("COLD", 0, 10, 20));
-        inputVariable.addTerm(new Triangle("WARM", 10, 20, 30));
-        inputVariable.addTerm(new Triangle("HOT", 20, 30, 40));
-        inputVariable.addTerm(new Triangle("VERYHOT", 30, 40, 40));
-        engine.addInputVariable(inputVariable);
+        InputVariable inputVariable1 = new InputVariable();
+        inputVariable1.setEnabled(true);
+        inputVariable1.setName("RoomTemperature");
+        inputVariable1.setRange(0, 40);
+        inputVariable1.addTerm(new Triangle("VERYCOLD", 0, 0, 10));
+        inputVariable1.addTerm(new Triangle("COLD", 0, 10, 20));
+        inputVariable1.addTerm(new Triangle("WARM", 10, 20, 30));
+        inputVariable1.addTerm(new Triangle("HOT", 20, 30, 40));
+        inputVariable1.addTerm(new Triangle("VERYHOT", 30, 40, 40));
+        engine.addInputVariable(inputVariable1);
+
+        InputVariable inputVariable2 = new InputVariable();
+        inputVariable2.setEnabled(true);
+        inputVariable2.setName("Target");
+        inputVariable2.setRange(0, 40);
+        inputVariable2.addTerm(new Triangle("VERYCOLD", 0, 0, 10));
+        inputVariable2.addTerm(new Triangle("COLD", 0, 10, 20));
+        inputVariable2.addTerm(new Triangle("WARM", 10, 20, 30));
+        inputVariable2.addTerm(new Triangle("HOT", 20, 30, 40));
+        inputVariable2.addTerm(new Triangle("VERYHOT", 30, 40, 40));
+        engine.addInputVariable(inputVariable2);
 
         OutputVariable outputVariable = new OutputVariable();
         outputVariable.setEnabled(true);
-        outputVariable.setName("Target");
+        outputVariable.setName("Command");
         outputVariable.setRange(0.000, 1.000);
         outputVariable.fuzzyOutput().setAccumulation(new Maximum());
         outputVariable.setDefuzzifier(new Centroid(200));
@@ -67,12 +78,12 @@ public class FuzzyX {
         ruleBlock.setConjunction(null);
         ruleBlock.setDisjunction(null);
         ruleBlock.setActivation(new Minimum());
-        ruleBlock.addRule(Rule.parse("if RoomTemperature is COLD or RoomTemperature is VERYCOLD then Target is HEAT", engine));
-        ruleBlock.addRule(Rule.parse("if RoomTemperature is HOT or RoomTemperature is VERYHOT then Target is COOL", engine));
-        ruleBlock.addRule(Rule.parse("if RoomTemperature is WARM then Target is NOCHANGE", engine));
+        ruleBlock.addRule(Rule.parse("if (RoomTemperature is COLD or RoomTemperature is VERYCOLD) and Target is WARM then Command is HEAT", engine));
+        ruleBlock.addRule(Rule.parse("if (RoomTemperature is HOT or RoomTemperature is VERYHOT) and Target is WARM then Command is COOL", engine));
+        ruleBlock.addRule(Rule.parse("if RoomTemperature is WARM and Target is WARM then Command is NOCHANGE", engine));
         engine.addRuleBlock(ruleBlock);
 
-        engine.configure("", "Maximum", "Minimum", "Maximum", "Centroid");
+        engine.configure("Minimum", "Maximum", "Minimum", "Maximum", "Centroid");
 
         StringBuilder status = new StringBuilder();
         if (!engine.isReady(status)) {
@@ -81,12 +92,14 @@ public class FuzzyX {
         }
 
         for (int i = 0; i < 1000; ++i) {
-            double input = inputVariable.getMinimum() + i * (inputVariable.range() / 1000);
-            inputVariable.setInputValue(input);
+            double input = inputVariable1.getMinimum() + i * (inputVariable1.range() / 1000);
+            inputVariable1.setInputValue(input);
+            double input1 = inputVariable2.getMinimum() + i * (inputVariable2.range() / 1000);
+            inputVariable2.setInputValue(input1);
             engine.process();
             FuzzyLite.logger().info(String.format(
-                    "Ambient.input = %s -> Power.output = %s",
-                    Op.str(input), Op.str(outputVariable.getOutputValue())));
+                    "Ambient.input1 = %s Ambient.input2 = %s-> Power.output = %s",
+                    Op.str(input),Op.str(input1), Op.str(outputVariable.getOutputValue())));
             inputList.add((float) input);
             outputList.add((float) outputVariable.getOutputValue());
         }
@@ -129,7 +142,7 @@ public class FuzzyX {
                     + "The following errors were encountered:\n" + status.toString());
         }
 
-        for (int i = 0; i < 1000; ++i) {
+        for (int i = 0; i < 40000; ++i) {
             double light = ambient.getMinimum() + i * (ambient.range() / 1000);
             ambient.setInputValue(light);
             engine.process();
